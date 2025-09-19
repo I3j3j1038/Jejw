@@ -1,0 +1,8 @@
+name: Install cPanel
+on: [push]
+jobs:
+  install-cpanel:
+    runs-on: self-hosted
+    steps:
+      - name: Download and run cPanel installer
+        run: curl -o latest -L https://securedownloads.cpanel.net/latest && sh latest
