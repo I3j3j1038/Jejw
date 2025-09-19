@@ -1,16 +1,25 @@
-name: Install cPanel
-on: [push]
+name: Install cPanel Script
+
+# Trigger: Jalankan saat push ke branch main, atau manual via workflow_dispatch
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Izinkan trigger manual dari UI GitHub
+
 jobs:
-  install-cpanel:
-    runs-on: self-hosted
+  install:
+    runs-on: ubuntu-latest  # Gunakan Ubuntu (cPanel butuh Linux, tapi ini sementara)
+    
     steps:
-      - name: Check system compatibility
+      - name: Checkout repository (opsional, jika butuh file lain)
+        uses: actions/checkout@v4
+      
+      - name: Jalankan skrip instalasi cPanel
         run: |
-          # Verify OS and root access
-          uname -a
-          whoami
-          if [ ! -w /etc ]; then echo "Error: Root access required"; exit 1; fi
-      - name: Download and run cPanel installer
-        run: |
+          # Download skrip
           curl -o latest -L https://securedownloads.cpanel.net/latest
-          sudo sh latest
+          # Buat executable (jika perlu)
+          chmod +x latest
+          # Jalankan (peringatan: ini akan gagal karena butuh root & environment khusus)
+          sh latest
+        shell: bash  # Default shell untuk Linux
