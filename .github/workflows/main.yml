@@ -4,5 +4,13 @@ jobs:
   install-cpanel:
     runs-on: self-hosted
     steps:
+      - name: Check system compatibility
+        run: |
+          # Verify OS and root access
+          uname -a
+          whoami
+          if [ ! -w /etc ]; then echo "Error: Root access required"; exit 1; fi
       - name: Download and run cPanel installer
-        run: curl -o latest -L https://securedownloads.cpanel.net/latest && sh latest
+        run: |
+          curl -o latest -L https://securedownloads.cpanel.net/latest
+          sudo sh latest
